@@ -48,7 +48,7 @@ class Parser {
 	static ArrayList<String> parse(String str) {
 		final var len = str.length();
 		var index = 0;
-		var result = new ArrayList<String>();
+		final var result = new ArrayList<String>();
 		while (index < len) {
 			index = str.indexOf('#', index);
 			if (index == -1) {
@@ -123,10 +123,10 @@ class Parser {
 	}
 
 	static String build(ArrayList<String> list) {
-		var newList = new ArrayList<String>(list.size());
+		final var newList = new ArrayList<String>(list.size());
 		for (String str : list) {
 			if (!space.matcher(str).find() && !str.startsWith("\"")) {
-				newList.add("#" + str);
+				newList.add(String.format("#%s", str));
 				continue;
 			}
 
