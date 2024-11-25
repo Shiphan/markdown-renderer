@@ -4,24 +4,33 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.StyledDocument;
 import java.util.List;
 
+import span.Span;
+import span.Heading.Level;
+import span.Heading;
+
 public class App {
 	public static void main(String[] args) {
 		var frame = new JFrame();
 		var pane = new JTextPane();
 		var doc = pane.getStyledDocument();
 
-		var list = List.of(
-			new Span("test here\n", null),
-			new Span("test here\n", null)
+		List<Span> list = List.of(
+			new Heading("test here\n", Level.h1),
+			new Heading("test here\n", Level.h2),
+			new Heading("test here\n", Level.h3),
+			new Heading("test here\n", Level.h4),
+			new Heading("test here\n", Level.h5),
+			new Heading("test here\n", Level.h6)
 		);
 
 		for (var ele : list) {
-			documentAppend(doc, ele.value, ele.style);
+			ele.render(doc);
 		}
 
 		frame.add(pane);
 		frame.setSize(200, 200);
 		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	static boolean documentAppend(StyledDocument doc, String str, AttributeSet style) {
@@ -31,14 +40,5 @@ public class App {
 			return false;
 		}
 		return true;
-	}
-}
-
-class Span {
-	public String value;
-	public AttributeSet style;
-	public Span(String value, AttributeSet style) {
-		this.value = value;
-		this.style = style;
 	}
 }

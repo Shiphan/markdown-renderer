@@ -1,15 +1,27 @@
+package tag;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.lang.IllegalArgumentException;
 
-public class tag {
+public class Tag {
 	public static void main(String[] args) {
+		System.out.println(Parser.findFirst("abcdef", "cd", 3));
+		System.out.println(Parser.findFirst("abcdef", "cd", 4));
+
+		System.out.println("---");
+
 		testByList(new ArrayList<String>(Arrays.asList(
-				"abc",
-				"tag def",
-				"tag\\\"\\",
-				"\"tag\\\"\\",
-				"\"")));
+			"abc",
+			"tag def",
+			"tag\\\"\\",
+			"\"tag\\\"\\",
+			"\""
+		)));
 		testByString("#\" ");
 	}
 
@@ -45,7 +57,7 @@ class Parser {
 	private final static Pattern escapeOrQuote = Pattern.compile("[\\\\\"]");
 	private final static Pattern special = Pattern.compile("[\\\\\"]");
 
-	static ArrayList<String> parse(String str) {
+	static ArrayList<String> parse(String str) throws IllegalArgumentException {
 		final var len = str.length();
 		var index = 0;
 		final var result = new ArrayList<String>();
@@ -155,4 +167,29 @@ class Parser {
 		}
 		return String.join(" ", newList);
 	}
+
+	/**
+	 * @return -1 if not found
+	 */
+	static int findFirst(CharSequence input, CharSequence target, int start, int end) {
+		final var targetSet = new HashSet<Character>();
+		for (char targetChar : target.toString().toCharArray()) {
+			targetSet.add(targetChar);
+		}
+		for (int index = start; index < end; index++) {
+			if (targetSet.contains(input.charAt(index))) {
+				return index;
+			}
+		}
+		return -1;
+	}
+
+	static int findFirst(CharSequence input, CharSequence target, int start) {
+		return findFirst(input, target, start, input.length());
+	}
+
+	static int findFirst(CharSequence input, CharSequence target) {
+		return findFirst(input, target, 0, input.length());
+	}
+
 }
