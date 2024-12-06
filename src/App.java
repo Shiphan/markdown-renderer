@@ -4,9 +4,10 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.StyledDocument;
 import java.util.List;
 
-import span.Span;
-import span.Heading.Level;
-import span.Heading;
+import markdownDocument.block.Block;
+import markdownDocument.span.Span;
+import markdownDocument.block.Heading.Level;
+import markdownDocument.block.Heading;
 
 public class App {
 	public static void main(String[] args) {
@@ -14,13 +15,13 @@ public class App {
 		var pane = new JTextPane();
 		var doc = pane.getStyledDocument();
 
-		List<Span> list = List.of(
-			new Heading("test here\n", Level.h1),
-			new Heading("test here\n", Level.h2),
-			new Heading("test here\n", Level.h3),
-			new Heading("test here\n", Level.h4),
-			new Heading("test here\n", Level.h5),
-			new Heading("test here\n", Level.h6)
+		List<Block> list = List.of(
+			new Heading("test here", Level.h1),
+			new Heading("test here", Level.h2),
+			new Heading("test here", Level.h3),
+			new Heading("test here", Level.h4),
+			new Heading("test here", Level.h5),
+			new Heading("test here", Level.h6)
 		);
 
 		for (var ele : list) {

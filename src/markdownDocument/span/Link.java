@@ -1,16 +1,17 @@
-package span;
+package markdownDocument.span;
 
 import javax.swing.text.StyledDocument;
 
 public class Link implements Span {
-	private Span content;
+	private Text content;
 	private String url;
 	private String title;
-	public Link(Span content, String url, String title) {
+	public Link(Text content, String url, String title) {
 		this.content = content;
 		this.url = url;
 		this.title = title;
 	}
+	@Override
 	public void render(StyledDocument doc) {
 
 	}

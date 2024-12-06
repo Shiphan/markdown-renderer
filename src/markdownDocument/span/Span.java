@@ -1,4 +1,4 @@
-package span;
+package markdownDocument.span;
 
 import javax.swing.text.StyledDocument;
 

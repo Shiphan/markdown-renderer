@@ -1,10 +1,12 @@
-package span;
+package markdownDocument.block;
+
+import markdownDocument.span.Span;
 
 import javax.swing.text.StyledDocument;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
-public class Heading implements Span {
+public class Heading implements Block {
 	public enum Level {
 		h1, h2, h3, h4, h5, h6
 	}
@@ -14,6 +16,7 @@ public class Heading implements Span {
 		this.content = content;
 		this.level = level;
 	}
+	@Override
 	public void render(StyledDocument doc) {
 		var attributeSet = new SimpleAttributeSet();
 		StyleConstants.setFontSize(
