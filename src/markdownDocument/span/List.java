@@ -6,6 +6,7 @@ import markdownDocument.block.Paragraph;
 import javax.swing.text.StyledDocument;
 
 public class List implements Span {
+    private boolean ordered;
     @Override
     public void render(StyledDocument doc) {
 

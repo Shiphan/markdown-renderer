@@ -1,7 +1,8 @@
 package markdownDocument.block;
 
-import javax.swing.text.StyledDocument;
+import javax.swing.JTextPane;
+import java.awt.Component;
 
 public interface Block {
-    void render(StyledDocument doc);
+    void render(JTextPane textPane);
 }
