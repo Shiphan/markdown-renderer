@@ -20,24 +20,6 @@ public class Heading implements Block {
 		this.content = content;
 		this.level = level;
 	}
-	/*
-	public Component render() {
-		final var label = new JLabel(this.content);
-		label.setFont(new Font(
-			"",
-			Font.PLAIN,
-			switch (this.level) {
-				case h1 -> 36;
-				case h2 -> 32;
-				case h3 -> 28;
-				case h4 -> 24;
-				case h5 -> 20;
-				case h6 -> 16;
-			}
-		));
-		return label;
-	}
-	*/
 	@Override
 	public void render(JTextPane textPane) {
 		final var attributeSet = new SimpleAttributeSet();

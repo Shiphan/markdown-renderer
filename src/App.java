@@ -4,11 +4,13 @@ import example.Example;
 import markdownDocument.MarkdownDocument;
 import markdownDocument.block.Heading.Level;
 import markdownDocument.block.Heading;
+import markdownDocument.block.HorizontalRule;
+import markdownDocument.block.Quote;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.text.BadLocationException;
+import javax.swing.JScrollPane;
 
 public class App {
 	public static void main(String[] args) {
@@ -23,18 +25,29 @@ public class App {
 				new Heading("test here", Level.h3),
 				new Heading("test here", Level.h4),
 				new Heading("test here", Level.h5),
-				new Heading("test here", Level.h6)
+				new Heading("test here", Level.h6),
+				new HorizontalRule(),
+				new Quote(List.of(
+					new Heading("test", Level.h3),
+					new Quote(List.of(
+						new Heading("test2", Level.h5),
+						new HorizontalRule()
+					)),
+					new HorizontalRule(),
+					new HorizontalRule()
+				))
 			)
 		);
 
-		panel.add(Example.toComponent());
+		panel.add(new JScrollPane(Example.toJTextPane()));
 		panel.add(markdownDocument.render());
 
 		frame.add(panel);
 
-		frame.pack();
+		// frame.pack();
+		frame.setSize(800, 800);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 }
-

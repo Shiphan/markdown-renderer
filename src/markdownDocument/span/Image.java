@@ -1,12 +1,16 @@
 package markdownDocument.span;
 
+import javax.swing.JTextPane;
 import javax.swing.text.StyledDocument;
 
 public class Image implements Span {
-    public Image(String src) {}
+    private String src;
 
+    public Image(String src) {
+        this.src = src;
+    }
     @Override
-    public void render(StyledDocument doc) {
+    public void render(JTextPane textPane) {
 
     }
 }

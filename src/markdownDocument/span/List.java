@@ -3,14 +3,20 @@ package markdownDocument.span;
 import markdownDocument.block.Block;
 import markdownDocument.block.Paragraph;
 
-import javax.swing.text.StyledDocument;
+import javax.swing.JTextPane;
 
 public class List implements Span {
+    private java.util.List<ListItem> contents;
     private boolean ordered;
+
+    public List(java.util.List<ListItem> contents) {
+        this.contents = contents;
+    }
     @Override
-    public void render(StyledDocument doc) {
+    public void render(JTextPane textPane) {
 
     }
+
     public class ListItem {
         private Paragraph content;
         private java.util.List<Block> elements;

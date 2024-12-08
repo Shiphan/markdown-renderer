@@ -1,14 +1,20 @@
 package markdownDocument.block;
 
+import markdownDocument.span.Span;
+
 import javax.swing.JTextPane;
-import javax.swing.text.StyledDocument;
-import java.awt.Component;
+import java.util.List;
 
 public class Paragraph implements Block {
+    private List<Span> contents;
 
-    public Paragraph() {}
+    public Paragraph(List<Span> contents) {
+        this.contents = contents;
+    }
     @Override
     public void render(JTextPane textPane) {
-
+        for (final var span : this.contents) {
+            span.render(textPane);
+        }
     }
 }

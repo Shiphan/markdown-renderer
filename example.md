@@ -21,7 +21,7 @@ empty line after and before the heading
 content of a markdown file
 content of a markdown file
 
-this will looks like 
+this will look like 
 ```
 content of a markdown file content of a markdown file
 ```
@@ -62,7 +62,7 @@ abc__NOT Bold or Italic Style__def (not bold this way)
 > cool quotes
 >> quotes in quotes
 
-you can put any thing in quotes, so it's like a small markdown file
+you can put anything in quotes, so it's like a small markdown file
 
 ---
 
