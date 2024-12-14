@@ -5,13 +5,15 @@ import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
 
+import markdownDocument.MarkdownDocument;
+import markdownDocument.Util;
+
 public class HorizontalRule implements Block {
 	public HorizontalRule() {}
 
 	@Override
 	public void render(JTextPane textPane) {
-		textPane.setSelectionStart(Integer.MAX_VALUE);
-		textPane.setSelectionEnd(Integer.MAX_VALUE);
+		Util.setSelectionToEnd(textPane);
 		textPane.insertComponent(new JSeparator());
 		final var doc = textPane.getStyledDocument();
 		try {

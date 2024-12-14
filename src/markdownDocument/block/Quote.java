@@ -4,6 +4,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
+
+import markdownDocument.Util;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.util.List;
@@ -19,7 +22,7 @@ public class Quote implements Block {
         final var quotePane = new JTextPane();
         quotePane.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createMatteBorder(0, 5, 0, 0, Color.LIGHT_GRAY),
-            BorderFactory.createEmptyBorder(3, 3, 3, 3)
+            BorderFactory.createEmptyBorder(3, 6, 3, 3)
         ));
         quotePane.setForeground(Color.LIGHT_GRAY);
         quotePane.setBackground(Color.DARK_GRAY);
@@ -28,8 +31,7 @@ public class Quote implements Block {
             block.render(quotePane);
         }
 
-        textPane.setSelectionStart(Integer.MAX_VALUE);
-        textPane.setSelectionEnd(Integer.MAX_VALUE);
+        Util.setSelectionToEnd(textPane);
         textPane.insertComponent(quotePane);
         final var doc = textPane.getStyledDocument();
         try {

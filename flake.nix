@@ -14,6 +14,8 @@
     devShells.${system}.default = pkgs.mkShell {
       buildInputs = with pkgs; [
           jdk21
+          async-profiler
+          # visualvm
       ];
       shellHook = ''
         echo

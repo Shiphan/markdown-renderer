@@ -1,8 +1,6 @@
 package markdownDocument;
 
 import markdownDocument.block.Block;
-import markdownDocument.block.Heading;
-import markdownDocument.block.Heading.Level;
 
 import javax.swing.BoxLayout;
 import javax.swing.JTextPane;
@@ -12,7 +10,9 @@ import java.util.List;
 public class MarkdownDocument {
 	private List<Block> blocks;
 
-	public MarkdownDocument() {}
+	public MarkdownDocument() {
+		this.blocks = List.of();
+	}
 	// public MarkdownDocument(String source) {}
 	public MarkdownDocument(List<Block> blocks) {
 		this.blocks = blocks;

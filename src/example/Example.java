@@ -6,6 +6,10 @@ import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
+
+import markdownDocument.MarkdownDocument;
+import markdownDocument.Util;
+
 import java.awt.Color;
 import java.util.List;
 
@@ -61,7 +65,7 @@ public class Example {
 
 
 
-		setSelectionTo(textPane, 0);
+		Util.setSelectionToEnd(textPane);
 		return textPane;
 	}
 	private static void heading(JTextPane textPane, String str, int size) {
@@ -76,9 +80,9 @@ public class Example {
 		}
 	}
 	private static void rule(JTextPane textPane) {
-		setSelectionTo(textPane, Integer.MAX_VALUE);
+		Util.setSelectionToEnd(textPane);
 		textPane.insertComponent(new JSeparator());
-		setSelectionTo(textPane, Integer.MAX_VALUE);
+		Util.setSelectionToEnd(textPane);
 		final var doc = textPane.getStyledDocument();
 		try {
 			doc.insertString(doc.getLength(), "\n", null);
@@ -139,18 +143,14 @@ public class Example {
 			throw new RuntimeException(e);
 		}
 
-		setSelectionTo(textPane, Integer.MAX_VALUE);
+		Util.setSelectionToEnd(textPane);
 		textPane.insertComponent(quotePane);
-		setSelectionTo(textPane, Integer.MAX_VALUE);
+		Util.setSelectionToEnd(textPane);
 		final var doc = textPane.getStyledDocument();
 		try {
 			doc.insertString(doc.getLength(), "\n", null);
 		} catch (BadLocationException e) {
 			throw new RuntimeException(e);
 		}
-	}
-	private static void setSelectionTo(JTextPane textPane, int selection) {
-		textPane.setSelectionStart(selection);
-		textPane.setSelectionEnd(selection);
 	}
 }
