@@ -1,1 +1,43 @@
 # Literal Note
+
+# Supported Syntax
+
+- [ ] Heading
+	- [ ] Normal `#` at the start of a line
+	- [ ] ~~`==` or `--` at the line below the heading~~
+- [ ] Paragraph
+	- [ ] empty line for new paragraph
+- [ ] Line Break
+	- [ ] `  ` at the end of a line for `\n`
+	- [ ] ~~`<br>` at the end of a line for `\n`~~
+- [ ] Styled Text
+	- [ ] Bold
+		- [ ] `**a**`
+		- [ ] ~~`__a__`~~
+	- [ ] Italic
+		- [ ] `*a*`
+		- [ ] ~~`_a_`~~
+	- [ ] Bold and Italic
+		- [ ] `***a***`
+		- [ ] ~~`___a___`~~
+		- [ ] ~~`__*a*__`~~
+		- [ ] ~~`**_a_**`~~
+	- [ ] Code
+		- [ ] `` `a` ``
+		- [ ] ~~``` ``a`` ``` if a ` in a~~
+- [ ] Quotes
+	- [ ] `>`
+	- [ ] multiple paragraphs in a quote block
+	- [ ] ~~nested quote like `>>`~~
+- [ ] Lists
+	- [ ] ordered list
+	- [ ] unordered list
+	- [ ] element of a list item
+- [ ] Images
+	- [ ] online image
+	- [ ] local image
+- [ ] Horizontal Rules
+- [ ] Links
+	- [ ] text link
+	- [ ] styled text link
+	- [ ] image link
