@@ -89,7 +89,22 @@ public class App {
 
 		editor.setListener((e) -> {
 			//System.out.println(e.toString());
-			renderPane.setViewportView(new Parser(editor.getText()).toMarkdownDocument().render());
+			final var text = editor.getText();
+			new Thread(() -> {
+				// System.out.println("sleep start");
+				// try {
+				// 	Thread.sleep(2000);
+				// } catch (InterruptedException ex) {
+				// 	throw new RuntimeException(ex);
+				// }
+				// System.out.println("sleep end");
+
+				final var renderResult = new Parser(text).toMarkdownDocument().render();
+				synchronized (renderPane) {
+					// FIXME: JScrollPane seems not work with thread
+					renderPane.setViewportView(renderResult);
+				}
+			}).start();
 		});
 
 		// panel.add(new JScrollPane(Example.toJTextPane()));
