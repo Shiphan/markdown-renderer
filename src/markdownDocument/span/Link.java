@@ -15,6 +15,7 @@ public class Link implements Span {
 	}
 	@Override
 	public void render(JTextPane textPane) {
-
+		// TODO: Link.render
+		this.content.render(textPane);
 	}
 }

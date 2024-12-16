@@ -28,12 +28,12 @@ public class List implements Span {
 
     }
 
-    public class ListItem {
+    public static class ListItem {
         private Paragraph content;
         private java.util.List<Block> elements;
         public ListItem(Paragraph content) {
             this.content = content;
-            this.elements = null;
+            this.elements = java.util.List.of();
         }
         public ListItem(Paragraph content, java.util.List<Block> elements) {
             this.content = content;
@@ -46,13 +46,11 @@ public class List implements Span {
             this.render(textPane, String.format(" %d. ", order));
         }
         private void render(JTextPane textPane, String prefix) {
-            final var doc = textPane.getStyledDocument();
             new Text.StyledText(prefix).render(textPane);
             this.content.render(textPane);
-            if (this.elements != null) {
-                for (final var element : this.elements) {
-                    element.render(textPane);
-                }
+            // TODO: indention of elements in ListItem
+            for (final var element : this.elements) {
+                element.render(textPane);
             }
         }
     }

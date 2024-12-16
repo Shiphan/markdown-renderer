@@ -22,6 +22,7 @@ public class Image implements Span {
     }
     @Override
     public void render(JTextPane textPane) {
+        // TODO: Image.render
         Util.setSelectionToEnd(textPane);
         textPane.insertComponent(new JLabel(new ImageIcon(this.src, this.title)));
         final var doc = textPane.getStyledDocument();
