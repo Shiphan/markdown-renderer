@@ -26,11 +26,10 @@ import javax.swing.event.DocumentListener;
 
 public class App {
 	public static void main(String[] args) {
+		System.setProperty("sun.java2d.uiScale", "2");
 		SwingUtilities.invokeLater(() -> { initUI(); });
 	}
 	private static void initUI() {
-		System.setProperty("sun.java2d.uiScale", "2");
-
 		final var frame = new JFrame("Markdown Renderer");
 		final var panel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 
