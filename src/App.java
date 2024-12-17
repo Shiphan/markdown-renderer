@@ -1,5 +1,6 @@
 import java.awt.Dimension;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
 import example.Example;
@@ -19,18 +20,24 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 public class App {
 	public static void main(String[] args) {
-		System.setProperty("sun.java2d.uiScale", "1.5");
+		SwingUtilities.invokeLater(() -> { initUI(); });
+	}
+	private static void initUI() {
+		System.setProperty("sun.java2d.uiScale", "2");
 
 		final var frame = new JFrame("Markdown Renderer");
 		final var panel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 
 		final var editor = new Editor();
 		final var renderPane = new JScrollPane();
+		final var latestRenderResultId = new AtomicLong(0);
+		final var renderPaneLatest = new AtomicLong(0);
 
 		var markdownDocument = new MarkdownDocument(List.of(
 			new Heading("test here", Level.h1),
@@ -89,20 +96,15 @@ public class App {
 
 		editor.setListener((e) -> {
 			//System.out.println(e.toString());
+			final var id = latestRenderResultId.incrementAndGet();
 			final var text = editor.getText();
 			new Thread(() -> {
-				// System.out.println("sleep start");
-				// try {
-				// 	Thread.sleep(2000);
-				// } catch (InterruptedException ex) {
-				// 	throw new RuntimeException(ex);
-				// }
-				// System.out.println("sleep end");
-
 				final var renderResult = new Parser(text).toMarkdownDocument().render();
-				synchronized (renderPane) {
-					// FIXME: JScrollPane seems not work with thread
-					renderPane.setViewportView(renderResult);
+				if (id > renderPaneLatest.get()) {
+					SwingUtilities.invokeLater(() -> {
+						renderPane.setViewportView(renderResult);
+					});
+					renderPaneLatest.set(id);
 				}
 			}).start();
 		});
