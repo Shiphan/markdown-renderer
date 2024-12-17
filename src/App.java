@@ -122,17 +122,21 @@ public class App {
 	}
 }
 
-class Editor extends JTextArea {
+class Editor extends JScrollPane {
+	private final JTextArea textArea;
+
 	public Editor() {
 		this((e) -> {});
 	}
 	public Editor(Consumer<DocumentEvent> listener) {
 		super();
-		this.setLineWrap(true);
+		this.textArea = new JTextArea();
+		this.setViewportView(this.textArea);
+		this.textArea.setLineWrap(true);
 		this.setListener(listener);
 	}
 	public void setListener(Consumer<DocumentEvent> listener) {
-		this.getDocument().addDocumentListener(new DocumentListener() {
+		this.textArea.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void changedUpdate(DocumentEvent e) {
 				listener.accept(e);
@@ -146,5 +150,8 @@ class Editor extends JTextArea {
 				listener.accept(e);
 			}
 		});
+	}
+	public String getText() {
+		return this.textArea.getText();
 	}
 }
