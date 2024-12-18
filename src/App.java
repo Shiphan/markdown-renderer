@@ -85,8 +85,8 @@ public class App {
 			))
 		));
 
-		renderPane.setViewportView(markdownDocument.render());
-		//renderPane.setViewportView(new MarkdownDocument().render());
+		//renderPane.setViewportView(markdownDocument.render());
+		renderPane.setViewportView(new MarkdownDocument().render());
 
 		//renderPane.setPreferredSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
 		//editor.setPreferredSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
