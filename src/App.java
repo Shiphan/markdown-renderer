@@ -98,8 +98,13 @@ public class App {
 			final var id = latestRenderResultId.incrementAndGet();
 			final var text = editor.getText();
 			new Thread(() -> {
-				final var renderResult = new Parser(text).toMarkdownDocument().render();
+				final var markdown = new Parser(text).toMarkdownDocument();
+				final var renderResult = markdown.render();
+				// final var renderResult = new Parser(text).toMarkdownDocument().render();
 				if (id > renderPaneLatest.get()) {
+					System.out.printf("updated id: %d\n", id);
+					System.out.println(markdown);
+					System.out.println("----------");
 					SwingUtilities.invokeLater(() -> {
 						renderPane.setViewportView(renderResult);
 					});

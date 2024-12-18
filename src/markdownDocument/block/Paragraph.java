@@ -17,4 +17,11 @@ public class Paragraph implements Block {
             span.render(textPane);
         }
     }
+    @Override
+    public String toString() {
+        return String.format(
+            "Paragraph { contents: %s }",
+            this.contents.toString()
+        );
+    }
 }

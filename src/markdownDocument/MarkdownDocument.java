@@ -23,4 +23,11 @@ public class MarkdownDocument {
 
 		return textPane;
 	}
+	@Override
+	public String toString() {
+		return String.format(
+			"MarkdownDocument { blocks: %s }",
+			this.blocks.toString()
+		);
+	}
 }
