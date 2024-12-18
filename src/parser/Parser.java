@@ -1,7 +1,6 @@
 package parser;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.IntStream;
 
 import markdownDocument.MarkdownDocument;
@@ -11,6 +10,7 @@ import markdownDocument.block.HorizontalRule;
 import markdownDocument.block.Paragraph;
 import markdownDocument.span.LineBreak;
 import markdownDocument.span.Span;
+import markdownDocument.span.Text.Code;
 import markdownDocument.span.Text.StyledText;;
 
 public class Parser {
@@ -61,29 +61,80 @@ public class Parser {
 			}
 
 			// paragraph
-			var tmpIndex = index;
-			final var spans = new ArrayList<Span>();
-			while (tmpIndex < len && this.source.charAt(tmpIndex) != '\n') {
-				final var start = index;
-				while (tmpIndex < len && this.source.charAt(tmpIndex) != '\n') {
-					tmpIndex++;
-				}
-				final var content = this.source.substring(start, tmpIndex);
-				spans.add(new StyledText(content));
-				if (content.endsWith("  ") || content.endsWith("<br>")) {
-					spans.add(new LineBreak());
-				}
-				tmpIndex++;
-			}
-			if (!(spans.getLast() instanceof LineBreak)) {
-				spans.add(new LineBreak());
-			}
-			blocks.add(new Paragraph(spans));
-			index = this.skipEmptyLine(tmpIndex);
-			continue;
+			index = consumeParagraph(index, blocks);
 		}
 
 		return new MarkdownDocument(blocks);
+	}
+	private int consumeParagraph(int index, ArrayList<Block> blocks) {
+		final var len = this.source.length();
+		final var spans = new ArrayList<Span>();
+		var bold = false;
+		var italic = false;
+		var code = false;
+		var preIndex = index;
+		while (index < len) {
+			final var ch = this.source.charAt(index);
+			if (ch == '*') {
+				if (this.source.startsWith("***", index) || this.source.startsWith("**_", index)) {
+					spans.add(new StyledText(this.source.substring(preIndex, index), bold, italic));
+					bold = !bold;
+					italic = !italic;
+					index += 3;
+					preIndex = index;
+					continue;
+				}
+				if (this.source.startsWith("**", index)) {
+					spans.add(new StyledText(this.source.substring(preIndex, index), bold, italic));
+					bold = !bold;
+					index += 2;
+					preIndex = index;
+					continue;
+				}
+				spans.add(new StyledText(this.source.substring(preIndex, index), bold, italic));
+				italic = !italic;
+				index += 1;
+				preIndex = index;
+				continue;
+			}
+			if (ch == '_') {
+
+			}
+			if (ch == '`') {
+				if (code) {
+					spans.add(new Code(this.source.substring(preIndex, index)));
+				} else {
+					spans.add(new StyledText(this.source.substring(preIndex, index), bold, italic));
+				}
+				code = !code;
+				index += 1;
+				preIndex = index;
+				continue;
+			}
+			if (ch == ' ') {
+
+			}
+			if (ch == '\n') {
+				if (preIndex != index) {
+					spans.add(new StyledText(this.source.substring(preIndex, index), bold, italic));
+				}
+				index++;
+				preIndex = index;
+				if (index < len && this.source.charAt(index) == '\n') {
+					break;
+				}
+				continue;
+			}
+			index++;
+		}
+		if (preIndex != index) {
+			spans.add(new StyledText(this.source.substring(preIndex, index), bold, italic));
+		}
+		if (!(spans.getLast() instanceof LineBreak)) {
+			spans.add(new LineBreak());
+		}
+		blocks.add(new Paragraph(spans));
+		return this.skipEmptyLine(index);
 	}
 	private int skipEmptyLine(int index) {
 		final var len = this.source.length();
