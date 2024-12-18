@@ -33,6 +33,7 @@ public interface Text extends Span {
 			}
 		}
 	}
+
 	class Code implements Text {
 		private String content;
 

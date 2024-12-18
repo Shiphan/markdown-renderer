@@ -7,15 +7,14 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 public class LineBreak implements Span {
-
-    public LineBreak() {}
-    @Override
-    public void render(JTextPane textPane) {
-        final var doc = textPane.getStyledDocument();
-        try {
-            doc.insertString(doc.getLength(), "\n", null);
-        } catch (BadLocationException e) {
-            throw new RuntimeException(e);
-        }
-    }
+	public LineBreak() {}
+	@Override
+	public void render(JTextPane textPane) {
+		final var doc = textPane.getStyledDocument();
+		try {
+			doc.insertString(doc.getLength(), "\n", null);
+		} catch (BadLocationException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }

@@ -11,11 +11,9 @@ import java.awt.Component;
 import java.awt.Font;
 
 public class Heading implements Block {
-	public enum Level {
-		h1, h2, h3, h4, h5, h6
-	}
 	private final String content;
 	private final Level level;
+
 	public Heading(String content, Level level) {
 		this.content = content;
 		this.level = level;
@@ -24,7 +22,7 @@ public class Heading implements Block {
 	public void render(JTextPane textPane) {
 		final var attributeSet = new SimpleAttributeSet();
 		StyleConstants.setFontSize(
-			attributeSet, 
+			attributeSet,
 			switch (this.level) {
 				case h1 -> 36;
 				case h2 -> 32;
@@ -40,5 +38,9 @@ public class Heading implements Block {
 		} catch (javax.swing.text.BadLocationException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public enum Level {
+		h1, h2, h3, h4, h5, h6
 	}
 }
