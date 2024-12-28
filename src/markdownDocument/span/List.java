@@ -10,7 +10,11 @@ public class List implements Span {
 	private boolean ordered;
 
 	public List(java.util.List<ListItem> contents) {
+		this(contents, false);
+	}
+	public List(java.util.List<ListItem> contents, boolean ordered) {
 		this.contents = contents;
+		this.ordered = ordered;
 	}
 	@Override
 	public void render(JTextPane textPane) {
@@ -40,7 +44,7 @@ public class List implements Span {
 			this.elements = elements;
 		}
 		public void render(JTextPane textPane) {
-			this.render(textPane, " - ");
+			this.render(textPane, " • ");
 		}
 		public void render(JTextPane textPane, int order) {
 			this.render(textPane, String.format(" %d. ", order));
