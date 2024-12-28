@@ -16,6 +16,7 @@ public class MarkdownDocument {
 	}
 	public JTextPane render() {
 		var textPane = new JTextPane();
+		textPane.setEditable(false);
 
 		for (var block: this.blocks) {
 			block.render(textPane);
