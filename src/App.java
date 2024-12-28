@@ -25,7 +25,12 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 public class App {
+	static boolean debug = false;
+
 	public static void main(String[] args) {
+		if (args.length > 0 && args[0].equals("--debug")) {
+			debug = true;
+		}
 		System.setProperty("sun.java2d.uiScale", "2");
 		SwingUtilities.invokeLater(() -> initUI());
 	}
@@ -102,9 +107,11 @@ public class App {
 				final var renderResult = markdown.render();
 				// final var renderResult = new Parser(text).toMarkdownDocument().render();
 				if (id > renderPaneLatest.get()) {
-					System.out.printf("updated id: %d\n", id);
-					System.out.println(markdown);
-					System.out.println("----------");
+					if (debug) {
+						System.out.printf("updated id: %d\n", id);
+						System.out.println(markdown);
+						System.out.println("----------");
+					}
 					SwingUtilities.invokeLater(() -> {
 						renderPane.setViewportView(renderResult);
 					});
