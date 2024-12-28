@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Dimension;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -145,6 +146,7 @@ class Editor extends JScrollPane {
 		this.textArea = new JTextArea();
 		this.setViewportView(this.textArea);
 		this.textArea.setLineWrap(true);
+		this.textArea.setCaretColor(Color.LIGHT_GRAY);
 		this.setListener(listener);
 	}
 	public void setListener(Consumer<DocumentEvent> listener) {
