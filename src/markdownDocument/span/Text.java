@@ -21,16 +21,28 @@ public interface Text extends Span {
 			this.italic = italic;
 		}
 		@Override
-		public void render(JTextPane textPane) {
+		public void render(JTextPane textPane, int indent) {
 			final var doc = textPane.getStyledDocument();
 			final var attributeSet = new SimpleAttributeSet();
 			StyleConstants.setBold(attributeSet, this.bold);
 			StyleConstants.setItalic(attributeSet, this.italic);
 			try {
-				doc.insertString(doc.getLength(), this.content, attributeSet);
+				doc.insertString(
+					doc.getLength(),
+					String.join("\n" + " ".repeat(indent), this.content.split("\n")), attributeSet
+				);
 			} catch (BadLocationException e) {
 				throw new RuntimeException(e);
 			}
+		}
+		@Override
+		public String toString() {
+			return String.format(
+				"StyledText { content: %s, bold: %b, italic: %b }",
+				this.content,
+				this.bold,
+				this.italic
+			);
 		}
 	}
 
@@ -41,17 +53,27 @@ public interface Text extends Span {
 			this.content = content;
 		}
 		@Override
-		public void render(JTextPane textPane) {
+		public void render(JTextPane textPane, int indent) {
 			final var doc = textPane.getStyledDocument();
 			final var attributeSet = new SimpleAttributeSet();
 			StyleConstants.setFontFamily(attributeSet, "mono");
 			StyleConstants.setForeground(attributeSet, Color.LIGHT_GRAY);
 			StyleConstants.setBackground(attributeSet, Color.DARK_GRAY);
 			try {
-				doc.insertString(doc.getLength(), this.content, attributeSet);
+				doc.insertString(
+					doc.getLength(),
+					String.join("\n" + " ".repeat(indent), this.content.split("\n")), attributeSet
+				);
 			} catch (BadLocationException e) {
 				throw new RuntimeException(e);
 			}
+		}
+		@Override
+		public String toString() {
+			return String.format(
+				"Code { content: %s }",
+				this.content
+			);
 		}
 	}
 }

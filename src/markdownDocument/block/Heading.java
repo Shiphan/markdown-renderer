@@ -19,7 +19,7 @@ public class Heading implements Block {
 		this.level = level;
 	}
 	@Override
-	public void render(JTextPane textPane) {
+	public void render(JTextPane textPane, int indent) {
 		final var attributeSet = new SimpleAttributeSet();
 		StyleConstants.setFontSize(
 			attributeSet,
@@ -34,6 +34,7 @@ public class Heading implements Block {
 		);
 		final var doc = textPane.getStyledDocument();
 		try {
+			doc.insertString(doc.getLength(), " ".repeat(indent), null);
 			doc.insertString(doc.getLength(), this.content + '\n', attributeSet);
 		} catch (javax.swing.text.BadLocationException e) {
 			throw new RuntimeException(e);

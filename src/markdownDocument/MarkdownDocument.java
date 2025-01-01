@@ -19,7 +19,7 @@ public class MarkdownDocument {
 		textPane.setEditable(false);
 
 		for (var block: this.blocks) {
-			block.render(textPane);
+			block.render(textPane, 0);
 		}
 
 		return textPane;

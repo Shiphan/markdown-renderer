@@ -14,8 +14,8 @@ public class Link implements Span {
 		this.title = title;
 	}
 	@Override
-	public void render(JTextPane textPane) {
+	public void render(JTextPane textPane, int indent) {
 		// TODO: Link.render
-		this.content.render(textPane);
+		this.content.render(textPane, indent);
 	}
 }

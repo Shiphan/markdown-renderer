@@ -12,10 +12,15 @@ public class HorizontalRule implements Block {
 	public HorizontalRule() {}
 
 	@Override
-	public void render(JTextPane textPane) {
+	public void render(JTextPane textPane, int indent) {
+		final var doc = textPane.getStyledDocument();
+		try {
+			doc.insertString(doc.getLength(), " ".repeat(indent), null);
+		} catch (BadLocationException e) {
+			throw new RuntimeException(e);
+		}
 		Util.setSelectionToEnd(textPane);
 		textPane.insertComponent(new JSeparator());
-		final var doc = textPane.getStyledDocument();
 		try {
 			doc.insertString(doc.getLength(), "\n", null);
 		} catch (BadLocationException e) {

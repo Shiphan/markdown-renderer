@@ -9,10 +9,10 @@ import javax.swing.text.StyledDocument;
 public class LineBreak implements Span {
 	public LineBreak() {}
 	@Override
-	public void render(JTextPane textPane) {
+	public void render(JTextPane textPane, int indent) {
 		final var doc = textPane.getStyledDocument();
 		try {
-			doc.insertString(doc.getLength(), "\n", null);
+			doc.insertString(doc.getLength(), "\n" + " ".repeat(indent), null);
 		} catch (BadLocationException e) {
 			throw new RuntimeException(e);
 		}

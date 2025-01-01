@@ -17,18 +17,26 @@ public class List implements Span {
 		this.ordered = ordered;
 	}
 	@Override
-	public void render(JTextPane textPane) {
+	public void render(JTextPane textPane, int indent) {
+		System.out.printf("list indent == %d\n", indent);
 		if (this.ordered) {
 			int index = 1;
 			for (final var item : this.contents) {
-				item.render(textPane, index);
+				item.render(textPane, String.format(" %d. ", index), indent);
 				index++;
 			}
 		} else {
 			for (final var item : this.contents) {
-				item.render(textPane);
+				item.render(textPane, " • ", indent);
 			}
 		}
+	}
+	@Override
+	public String toString() {
+		return String.format(
+			"List { contents: %s }",
+			this.contents.toString()
+		);
 	}
 
 	public static class ListItem {
@@ -43,19 +51,21 @@ public class List implements Span {
 			this.content = content;
 			this.elements = elements;
 		}
-		public void render(JTextPane textPane) {
-			this.render(textPane, " • ");
-		}
-		public void render(JTextPane textPane, int order) {
-			this.render(textPane, String.format(" %d. ", order));
-		}
-		private void render(JTextPane textPane, String prefix) {
-			new Text.StyledText(prefix).render(textPane);
-			this.content.render(textPane);
+		public void render(JTextPane textPane, String prefix, int indent) {
+			new Text.StyledText(prefix).render(textPane, indent);
+			this.content.render(textPane, 0);
 			// TODO: indention of elements in ListItem
 			for (final var element : this.elements) {
-				element.render(textPane);
+				element.render(textPane, indent + 4);
 			}
+		}
+		@Override
+		public String toString() {
+			return String.format(
+				"ListItem { content: %s, elements: %s }",
+				this.content.toString(),
+				this.elements.toString()
+			);
 		}
 	}
 }
