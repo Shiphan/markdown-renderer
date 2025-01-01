@@ -1,19 +1,20 @@
 package parser;
 
 import java.util.ArrayList;
-import java.util.stream.IntStream;
 
 import markdownDocument.MarkdownDocument;
 import markdownDocument.block.Block;
 import markdownDocument.block.Heading;
 import markdownDocument.block.HorizontalRule;
 import markdownDocument.block.Paragraph;
+import markdownDocument.block.Quote;
 import markdownDocument.span.LineBreak;
 import markdownDocument.span.Span;
 import markdownDocument.span.Text;
 import markdownDocument.span.List.ListItem;
 import markdownDocument.span.Text.Code;
-import markdownDocument.span.Text.StyledText;;
+import markdownDocument.span.Text.StyledText;
+import panic.Panic;;
 
 public class Parser {
 	private String source;
@@ -42,7 +43,15 @@ public class Parser {
 					}
 					blocks.add(new Heading(
 						this.source.substring(index + headingLevel + 1, tmpIndex),
-						Heading.Level.values()[headingLevel - 1]
+						switch (headingLevel) {
+							case 1 -> Heading.Level.h1;
+							case 2 -> Heading.Level.h2;
+							case 3 -> Heading.Level.h3;
+							case 4 -> Heading.Level.h4;
+							case 5 -> Heading.Level.h5;
+							case 6 -> Heading.Level.h6;
+							default -> throw new Panic();
+						}
 					));
 					index = this.skipEmptyLine(tmpIndex);
 					continue;
@@ -62,17 +71,31 @@ public class Parser {
 				}
 			}
 
+			// quote
+			if (this.source.startsWith("> ", index)) {
+				final var quoteBlocks = new ArrayList<Block>();
+				while (this.source.startsWith("> ", index)) {
+					index = consumeParagraph(index, quoteBlocks, "> ");
+				}
+				blocks.add(new Quote(quoteBlocks));
+				continue;
+			}
+
 			// paragraph
-			index = consumeParagraph(index, blocks);
+			index = consumeParagraph(index, blocks, "");
 		}
 
 		return new MarkdownDocument(blocks);
 	}
-	private int consumeParagraph(int index, ArrayList<Block> blocks) {
+	private int consumeParagraph(int index, ArrayList<Block> blocks, String prefix) {
 		final var len = this.source.length();
 		final var spans = new ArrayList<Span>();
 		final var style = new Style();
-		while (index < len && this.source.charAt(index) != '\n') {
+		while (index < len && this.source.charAt(index) != '\n' && this.source.startsWith(prefix, index)) {
+			index += prefix.length();
+			if (index >= len) {
+				break;
+			}
 			if (charInString(this.source.charAt(index), "-*+") && index + 1 < len && this.source.charAt(index + 1) == ' ') {
 				final var listItems = new ArrayList<ListItem>();
 				while (index < len) {
@@ -83,6 +106,9 @@ public class Parser {
 					index = this.consumeLine(index + 2, tmpSpans, style);
 					tmpSpans.add(new LineBreak());
 					final var elements = new ArrayList<Block>();
+					while (this.source.startsWith(prefix + " ".repeat(4), index)) {
+						index = consumeParagraph(index, elements, prefix + " ".repeat(4));
+					}
 					//index = this.consumeListItemElements(index, elements);
 					listItems.add(new ListItem(new Paragraph(tmpSpans), elements));
 				}
@@ -106,6 +132,9 @@ public class Parser {
 					index = this.consumeLine(tmpIndexForItem + 2, tmpSpans, style);
 					tmpSpans.add(new LineBreak());
 					final var elements = new ArrayList<Block>();
+					while (this.source.startsWith(prefix + " ".repeat(4), index)) {
+						index = consumeParagraph(index, elements, prefix + " ".repeat(4));
+					}
 					//index = this.consumeListItemElements(index, elements);
 					listItems.add(new ListItem(new Paragraph(tmpSpans), elements));
 				}
@@ -115,11 +144,11 @@ public class Parser {
 
 			index = this.consumeLine(index, spans, style);
 		}
-		//if (preIndex != index) {
-		//	spans.add(new StyledText(this.source.substring(preIndex, index), bold, italic));
-		//}
-		//if (!(spans.getLast() instanceof LineBreak)) {
-		if (spans.getLast() instanceof Text) {
+		// if (preIndex != index) {
+		// 	spans.add(new StyledText(this.source.substring(preIndex, index), bold, italic));
+		// }
+		// if (!(spans.getLast() instanceof LineBreak)) {
+		if (!spans.isEmpty() && spans.getLast() instanceof Text) {
 			spans.add(new LineBreak());
 		}
 		blocks.add(new Paragraph(spans));
@@ -186,8 +215,16 @@ public class Parser {
 				preIndex = index;
 				continue;
 			}
-			if (ch == ' ') {
-
+			if (this.source.startsWith("  \n", index) || this.source.startsWith("<br>\n", index)) {
+				if (style.code) {
+					spans.add(new Code(this.source.substring(preIndex, index)));
+				} else {
+					spans.add(new StyledText(this.source.substring(preIndex, index), style.bold, style.italic));
+				}
+				spans.add(new LineBreak());
+				index = this.source.indexOf('\n', index);
+				preIndex = index;
+				continue;
 			}
 			index++;
 		}
@@ -214,13 +251,13 @@ public class Parser {
 		return index;
 	}
 	private static boolean charInString(char ch, String string) {
-		return IntStream.range(0, string.length()).anyMatch((i) -> ch == string.charAt(i));
+		return string.chars().anyMatch((x) -> ch == x);
 	}
 	private static boolean charInRange(char ch, char start, char end) {
 		return start <= ch && ch <= end;
 	}
 
-	private class Style {
+	private static class Style {
 		public boolean bold;
 		public boolean italic;
 		public boolean code;

@@ -16,6 +16,7 @@ import markdownDocument.span.Text.StyledText;
 import markdownDocument.span.LineBreak;
 import markdownDocument.span.List.ListItem;
 import parser.Parser;
+import parser.Parser2;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -105,6 +106,7 @@ public class App {
 			final var text = editor.getText();
 			new Thread(() -> {
 				final var markdown = new Parser(text).toMarkdownDocument();
+				//final var markdown = new Parser2(text).toMarkdownDocument();
 				final var renderResult = markdown.render();
 				// final var renderResult = new Parser(text).toMarkdownDocument().render();
 				if (id > renderPaneLatest.get()) {
@@ -128,7 +130,8 @@ public class App {
 		frame.add(panel);
 
 		// frame.pack();
-		frame.setSize(800, 800);
+		frame.setSize(800, 600);
+		//frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
